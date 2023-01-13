@@ -1,6 +1,4 @@
 import { Body, Controller, Get, Param, Post, Req } from '@nestjs/common';
-import { Request } from 'express';
-import { use } from 'passport';
 import { loginDto } from 'src/dto/login.dto';
 import { userDto } from 'src/dto/user.dto';
 import { UserService } from './user.service';
