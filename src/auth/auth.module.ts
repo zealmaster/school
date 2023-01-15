@@ -6,15 +6,22 @@ import { LocalStrategy } from './local.strategy';
 import { AuthController } from './auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { user } from 'src/entity/user.entity';
-import { UserService } from 'src/user/user.service';
+import { JwtModule } from '@nestjs/jwt';
+import { jwtConstants } from './constants';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
     UserModule,
-    PassportModule.register({ session: true }),
+    PassportModule.register({ defaultStrategy: 'local', session: true }),
     TypeOrmModule.forFeature([user]),
+    JwtModule.register({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: '24h' },
+    }),
   ],
-  providers: [AuthService, LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
   controllers: [AuthController],
+  exports: [AuthService],
 })
 export class AuthModule {}
